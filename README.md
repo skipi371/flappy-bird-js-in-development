@@ -1,0 +1,1 @@
+So, I am currently creating Flappy Bird in JavaScript. I haven’t copied or stolen any code—aside from some example code from a YouTube tutorial that explained the basics (variables, etc.). I don’t intend to make an exact clone; I’m just building a playable version for practice.

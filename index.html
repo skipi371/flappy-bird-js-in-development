@@ -6,11 +6,12 @@
 </head>
 <body>
     <canvas id="jeu" width="600" height="400" style="background: lightgray;"></canvas>
+    
 
     <script>
         function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min)) + min;
-}
+}       
         // 1. Définition de la fonction attendre (Promise) manquante
         function attendre(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
@@ -44,6 +45,7 @@
         let vitesseTuyau = 2 
 
         function dessiner() {
+            console.log(vitesseTuyau)
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         
             function new_speed_tuyeaux(){
@@ -52,7 +54,7 @@
             // --- PHYSIQUE DU JOUEUR ---
             vitesseY += gravite;
             speedy += vitesseY;
-
+            const score = document.querySelector('h1');
             if (speedy + player_size > canvas.height) {
                 speedy = canvas.height - player_size;
                 vitesseY = 0;
@@ -65,10 +67,15 @@
             // --- PHYSIQUE DES TUYAUX ---
             // Le tuyau avance vers la gauche à chaque image (60 fois par seconde)
             tuyauX -= vitesseTuyau;
+            if (speedy && speedx == vitesseTuyau) {
+                console.log("colision")
+            }
 
             // Si le tuyau sort de l'écran à gauche, on le remet à droite (boucle infinie)
-            if (tuyauX < -200) {
+            if (tuyauX < -100) {
                 tuyauX = canvas.width;
+                
+                
             }
 
             
@@ -90,6 +97,7 @@
             if (event.code === "Space") {
                 event.preventDefault();
                 vitesseY = saut;
+                score.textContent = "Nouveau titre de la page";
             }
         });
 
@@ -98,7 +106,7 @@
             for (let i = 0; i < 50; i++) {
                 console.log("tour numéro :" + i);
                 console.log("tuyanx du haut : ",tuyeau_pointe_bas.x)
-                console.log("tuyeaux du ha")
+                console.log("tuyeaux du bas : ", tuyeau_pointe_haut.x )
                 await attendre(2000);
             }   
         }

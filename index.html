@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon jeu</title>
+</head>
+<body>
+    <canvas id="jeu" width="600" height="400" style="background: lightgray;"></canvas>
+
+    <script>
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min)) + min;
+}
+        // 1. Définition de la fonction attendre (Promise) manquante
+        function attendre(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        const ecartx = getRandomInt(1, 100);
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("Le DOM est prêt !");
+            lancertimer();
+        });
+        
+        
+        const tuyeau_pointe_haut = new Image();
+        const tuyeau_pointe_bas = new Image();
+
+        tuyeau_pointe_haut.src = "asset/tuyeau pointe haut.png";
+        tuyeau_pointe_bas.src = "asset/tuyeau pointe bas.png";
+
+        const canvas = document.getElementById("jeu");
+        const ctx = canvas.getContext("2d");
+        
+        let speedx = 50;
+        let speedy = 50; 
+        let vitesseY = 0; 
+
+        let player_size = 40;
+        const gravite = 0.4;
+        const saut = -8;
+
+        // Variables pour gérer la position et la vitesse du tuyau
+        let tuyauX = ecartx; 
+        let vitesseTuyau = 2 
+
+        function dessiner() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+            function new_speed_tuyeaux(){
+            
+        }
+            // --- PHYSIQUE DU JOUEUR ---
+            vitesseY += gravite;
+            speedy += vitesseY;
+
+            if (speedy + player_size > canvas.height) {
+                speedy = canvas.height - player_size;
+                vitesseY = 0;
+            }
+            if (speedy < 0) {
+                speedy = 0;
+                vitesseY = 0;
+            }
+
+            // --- PHYSIQUE DES TUYAUX ---
+            // Le tuyau avance vers la gauche à chaque image (60 fois par seconde)
+            tuyauX -= vitesseTuyau;
+
+            // Si le tuyau sort de l'écran à gauche, on le remet à droite (boucle infinie)
+            if (tuyauX < -200) {
+                tuyauX = canvas.width;
+            }
+
+            
+            ctx.fillStyle = "blue";
+            ctx.fillRect(speedx, speedy, player_size, player_size);
+
+           
+            if (tuyeau_pointe_haut.complete) { 
+                ctx.drawImage(tuyeau_pointe_haut, tuyauX, 258, 200, 200);
+            }
+            if (tuyeau_pointe_bas.complete) {
+                ctx.drawImage(tuyeau_pointe_bas, tuyauX , 0,200,200)
+            }
+
+            requestAnimationFrame(dessiner);
+        }
+
+        document.addEventListener("keydown", (event) => {
+            if (event.code === "Space") {
+                event.preventDefault();
+                vitesseY = saut;
+            }
+        });
+
+       
+        async function lancertimer() {
+            for (let i = 0; i < 50; i++) {
+                console.log("tour numéro :" + i);
+                console.log("tuyanx du haut : ",tuyeau_pointe_bas.x)
+                console.log("tuyeaux du ha")
+                await attendre(2000);
+            }   
+        }
+     
+        dessiner();
+    </script>
+</body>
+</html>
